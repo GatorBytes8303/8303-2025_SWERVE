@@ -14,7 +14,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -22,7 +21,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
 /*
@@ -61,17 +59,22 @@ public class RobotContainer {
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by
-   * instantiating a {@link edu.wpi.first.wpilibj.GenericHID} or one of its
-   * subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling
-   * passing it to a
-   * {@link JoystickButton}.
+   * using {@link XboxController}).
    */
+
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kR1.value)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
+    boolean wasPressed = false;
+    if (m_driverController.getRightBumperPressed() == true && wasPressed == false){
+        wasPressed = true;
+        new RunCommand(
+            () -> m_robotDrive.setX(45.0),
+            m_robotDrive);
+    } else if (m_driverController.getRightBumperPressed() == true && wasPressed == false){
+        wasPressed = false;
+        new RunCommand(
+            () -> m_robotDrive.setX(0.0),
+            m_robotDrive);
+    }
   }
 
   /**
